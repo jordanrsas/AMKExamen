@@ -18,12 +18,26 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import butterknife.ButterKnife;
 
@@ -70,7 +84,14 @@ public class GenresFragment extends GenericFragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        MusicGenresResponse res = new Gson().fromJson(response, MusicGenresResponse.class);
+                        GsonBuilder builder = new GsonBuilder();
+                        builder.registerTypeAdapter(
+                                new TypeToken<Map<String, String>>() {
+                                }.getType(),
+                                new ArrayOfObjectsToMapDeserializer()
+                        );
+                        Gson gson = builder.create();
+                        MusicGenresResponse res = gson.fromJson(response, MusicGenresResponse.class);
                         genresResponse = res.getResponse();
 
                     }
@@ -82,17 +103,6 @@ public class GenresFragment extends GenericFragment {
         });
 
         queue.add(stringRequest);
-
-
-        /*URL url = null;
-        try {
-            url = new URL("http://itunes.apple.com/WebObjects/MZStoreServices.woa/ws/genres?id=34");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        HttpURLConnection connection = openConnection(url);
-        String response = readDataFromResponseStream(createResponseReader(connection));*/
     }
 
     private static String readDataFromResponseStream(BufferedReader responseReader) {
@@ -129,5 +139,19 @@ public class GenresFragment extends GenericFragment {
             e.printStackTrace();
         }
         return in;
+    }
+
+    class ArrayOfObjectsToMapDeserializer
+            implements JsonDeserializer<Map<String, String>> {
+
+        @Override
+        public Map<String, String> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            Map<String, String> result = new HashMap<>();
+
+            JsonObject object = json.getAsJsonObject();
+            Set<Map.Entry<String, JsonElement>> entrySet = object.entrySet();
+
+            return result;
+        }
     }
 }

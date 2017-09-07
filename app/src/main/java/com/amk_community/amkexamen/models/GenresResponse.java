@@ -1,19 +1,19 @@
 package com.amk_community.amkexamen.models;
 
-import org.json.JSONObject;
+import java.util.Map;
 
 /**
  * Created by Jordan on 06/09/2017.
  */
 
 public class GenresResponse extends Genres {
-    private JSONObject subgenres;
+    private Map<String, String> subgenres;
 
-    public JSONObject getSubgenres() {
+    public Map<String, String> getSubgenres() {
         return subgenres;
     }
 
-    public void setSubgenres(JSONObject subgenres) {
+    public void setSubgenres(Map<String, String> subgenres) {
         this.subgenres = subgenres;
     }
 }
