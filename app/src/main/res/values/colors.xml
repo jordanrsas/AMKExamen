@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#0031B5</color>
+    <color name="colorPrimaryDark">#be10b2e6</color>
+    <color name="colorAccent">#00A1E1</color>
+
+    <color name="colorGris">#CCCCCC</color>
+    <color name="colorPinkLight">#FF149B</color>
+    <color name="colorPinkDark">#CC107C</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="colorPrimaryAlpha">#c0293943</color>
+    <color name="whiteColor">#FFF</color>
+    <color name="bg_progress">#d73b3939</color>
+</resources>
